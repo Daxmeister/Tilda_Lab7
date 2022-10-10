@@ -44,10 +44,10 @@ class Drama:
         return self.Drama_Name
 
     def __lt__(self, other):
-        if self.rating < other.rating:
-            return True
-        else:
-            return False
+        return self.rating < other.rating
+
+    def __eq__(self, other):
+        return self.rating == other.rating
 
     def return_name(self):
         return self.Drama_Name
@@ -69,44 +69,78 @@ def create_dict_of_dramamovie_objects():
                 dict_of_drama_movies.store(tempdict.Drama_Name, tempdict)
         return dict_of_drama_movies
 
-dictTest = create_dict_of_dramamovie_objects()
-print(dictTest["The Heirs"])
+#dictTest = create_dict_of_dramamovie_objects()
+#print(dictTest["The Heirs"])
 #print(dictTest["banan"])
-exit()
+
 
 # Del 2 --------------------------------------------------------------------------------------------------------
 # Noder till klassen Hashtable
 class HashNode:
-
-
     # key är nyckeln som anvands vid hashningen, data är det objekt som ska hashas in
     def __init__(self, key = "", data = None):
 
         self.key = key
         self.data = data
+        self.next = None
         #Fyll i kod här för att initiera hashtabellen
 
-class Hashtable:
-    # size: hashtabellens storlek
-    def __init__(self, size):
 
+class Hashtable:
+    def __init__(self, size):
         self.size = size
+        self.hashslots = [None] * size
 
     #key är nyckeln data är objektet som ska lagras Stoppar in "data" med nyckeln "key" i tabellen.
     def store(self, key, data):
-        pass
-        #Fyll i kod här!
+        hashnode = HashNode(key, data)
+        hashvalue = self.hashfunction(hashnode.key)
+        if self.hashslots[hashvalue] == None:
+            self.hashslots[hashvalue] = hashnode
+            print("Stored new value for slot")
+        else:
+            self.next_element = self.hashslots[hashvalue]
+            while self.next_element != None:
+                if self.next_element.key == key:
+                    self.next_element.data = data        # Ersätter data med den senaste så att varje key bara finns en gång.
+                    print("Replaced data for key " + str(key))
+                    return
+                self.previous_element = self.next_element
+                self.next_element = self.next_element.next
+            self.previous_element.next = hashnode                # Kommer antingen att ersätta None eller en identisk.
+            print("Inserted new value in linked list at " + str(self.hashfunction(key)))
+
 
     # key är nyckeln
 #          Hämtar det objekt som finns lagrat med nyckeln "key" och returnerar det.
 #          Om "key" inte finns ska det bli KeyError
     def search(self, key):
-        #Fyll i kod här!
-        #...
-        '''else:
-            raise KeyError'''
+        hashvalue = self.hashfunction(key)
+        if self.hashslots[hashvalue] == None:
+            raise KeyError
+        else:
+            self.next_element = self.hashslots[hashvalue]
+            while self.next_element != None:
+                if self.next_element.key == key:
+                    return self.next_element.data
+                self.next_element = self.next_element.next
+            raise KeyError
 
     # key är nyckeln Beräknar hashfunktionen för key
     def hashfunction(self, key):
-        pass
-        #Fyll i kod här!
+        key = str(key)
+        hashable_number = 0
+        multiplier = 0
+        for character in key:
+            multiplier += 1
+            hashable_number += ord(character)
+        print(hashable_number)
+        print(hashable_number % self.size)
+        return hashable_number % self.size
+
+table = Hashtable(11)
+table.store("tits", 13)
+table.store(16, "balla")
+table.store(23, 16)
+#x = table.search(23)
+#print(x)
