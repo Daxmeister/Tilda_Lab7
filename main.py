@@ -132,13 +132,32 @@ class Hashtable:
         for character in key:
             multiplier += 1
             hashable_number += ord(character)
-        print(hashable_number)
-        print(hashable_number % self.size)
         return hashable_number % self.size
 
-table = Hashtable(11)
+'''table = Hashtable(11)
 table.store("tits", 13)
 table.store(16, "balla")
-table.store(23, 16)
+table.store(23, 16)'''
 #x = table.search(23)
 #print(x)
+
+# Testning del 1
+# Vi stoppar in koreanska filen. Vi har ett lambda tal på 0.5.
+
+# Funktion som skapar en Hashdictionary med kdrama
+def create_dict_of_dramamovie_objects(size):
+    with open('kdramaMini.csv') as kdrama:
+        dict_of_drama_movies = Hashtable(size)
+        spamreader = csv.reader(kdrama)
+        counter = 0
+        for row in spamreader:
+            if counter == 0:
+                counter = 1
+            else:
+                tempdict = Drama(row)
+                #print(tempdict.Drama_Name)
+                dict_of_drama_movies.store(tempdict.Drama_Name, tempdict)
+        return dict_of_drama_movies
+
+table = create_dict_of_dramamovie_objects(26)
+
