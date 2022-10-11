@@ -77,7 +77,7 @@ def create_dict_of_dramamovie_objects():
 # Del 2 --------------------------------------------------------------------------------------------------------
 # Noder till klassen Hashtable
 class HashNode:
-    # key är nyckeln som anvands vid hashningen, data är det objekt som ska hashas in
+    # Key är nyckeln som används vid hashningen, data är det objekt som ska hashas in
     def __init__(self, key = "", data = None):
 
         self.key = key
@@ -85,13 +85,14 @@ class HashNode:
         self.next = None
         #Fyll i kod här för att initiera hashtabellen
 
-
+# En klass för Hashtable, den spar Hashnodes i en hashtabell och använder länkade listor som krockhantering.
 class Hashtable:
+
     def __init__(self, size):
         self.size = size
         self.hashslots = [None] * size
 
-    #key är nyckeln data är objektet som ska lagras Stoppar in "data" med nyckeln "key" i tabellen.
+    # Input är key och data, där man kan söka på key för att få fram data. Använder länkade listor som krockhantering.
     def store(self, key, data):
         hashnode = HashNode(key, data)
         hashvalue = self.hashfunction(hashnode.key)
@@ -102,18 +103,15 @@ class Hashtable:
             self.next_element = self.hashslots[hashvalue]
             while self.next_element != None:
                 if self.next_element.key == key:
-                    self.next_element.data = data        # Ersätter data med den senaste så att varje key bara finns en gång.
+                    self.next_element.data = data        # Ersätter data med den senaste. Varje key finns bara en gång.
                     print("Replaced data for key " + str(key))
                     return
                 self.previous_element = self.next_element
                 self.next_element = self.next_element.next
-            self.previous_element.next = hashnode                # Kommer antingen att ersätta None eller en identisk.
+            self.previous_element.next = hashnode
             print("Inserted new value in linked list at " + str(self.hashfunction(key)))
 
-
-    # key är nyckeln
-#          Hämtar det objekt som finns lagrat med nyckeln "key" och returnerar det.
-#          Om "key" inte finns ska det bli KeyError
+    # Input är en nyckel, output är antingen ett KeyError om den inte finns eller data värdet sparat under nyckeln.
     def search(self, key):
         hashvalue = self.hashfunction(key)
         if self.hashslots[hashvalue] == None:
@@ -126,7 +124,7 @@ class Hashtable:
                 self.next_element = self.next_element.next
             raise KeyError
 
-    # key är nyckeln Beräknar hashfunktionen för key
+    # Input nyckeln, output är ett Hashtal
     def hashfunction(self, key):
         key = str(key)
         hashable_number = 0
