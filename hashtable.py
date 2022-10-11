@@ -98,18 +98,18 @@ class Hashtable:
         hashvalue = self.hashfunction(hashnode.key)
         if self.hashslots[hashvalue] == None:
             self.hashslots[hashvalue] = hashnode
-            print("Stored new value for slot")
+            #print("Stored new value for slot")
         else:
             self.next_element = self.hashslots[hashvalue]
             while self.next_element != None:
                 if self.next_element.key == key:
                     self.next_element.data = data        # Ersätter data med den senaste. Varje key finns bara en gång.
-                    print("Replaced data for key " + str(key))
+                    #print("Replaced data for key " + str(key))
                     return
                 self.previous_element = self.next_element
                 self.next_element = self.next_element.next
             self.previous_element.next = hashnode
-            print("Inserted new value in linked list at " + str(self.hashfunction(key)))
+            #print("Inserted new value in linked list at " + str(self.hashfunction(key)))
 
     # Input är en nyckel, output är antingen ett KeyError om den inte finns eller data värdet sparat under nyckeln.
     def search(self, key):
@@ -159,5 +159,4 @@ def create_dict_of_dramamovie_objects(size):
                 dict_of_drama_movies.store(tempdict.Drama_Name, tempdict)
         return dict_of_drama_movies
 
-table = create_dict_of_dramamovie_objects(26)
 
